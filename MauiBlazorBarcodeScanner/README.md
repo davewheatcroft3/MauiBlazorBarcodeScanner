@@ -45,3 +45,10 @@ https://github.com/dotnet/maui/issues/9882
 
 If you go to Google Play and uninstall the Android web view control, it will work. It appears to be an issue with the latest webview, 
 and was literally resolved yesterday at the time of writing, so im hoping it will be fine by the time you read this!
+
+The permissions part of this project was copied from:
+https://github.com/MackinnonBuck/MauiBlazorPermissionsExample
+I logged on a issue on there regarding an issue specifically with AppShell where something the app shell does mean the blazor web view on 
+initalized method is too late to register with the Android activitie's result handler meaning it throws an error. I modifed this to work by
+hooking into the android page lifecycle and altering the permission manager to be a singleton that gets set by both the activity and the web view.
+Not necessarily the nicest solution, but any better ideas welcome!
