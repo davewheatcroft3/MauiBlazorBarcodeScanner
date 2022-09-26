@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:camera="clr-namespace:MauiBlazorBarcodeScanner;assembly=MauiBlazorBarcodeScanner"
+             x:Class="MauiBlazorBarcodeScannerSample.MainPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+        </Grid.RowDefinitions>
+        <camera:CameraScannerView x:Name="CameraScanner" BarcodeDetected="CameraScanner_BarcodeDetected"></camera:CameraScannerView>
+        <Label x:Name="LastBarcode" Text="-" Grid.Row="1" HorizontalOptions="CenterAndExpand"></Label>
+        <HorizontalStackLayout Grid.Row="2" Spacing="4" Padding="4" HorizontalOptions="CenterAndExpand">
+            <Button x:Name="buttonCameraFacing" Clicked="buttonCameraFacing_Clicked"></Button>
+            <Button x:Name="buttonCameraOn" Clicked="buttonCameraOn_Clicked"></Button>
+            <Button x:Name="buttonCameraScanning" Clicked="buttonCameraScanning_Clicked"></Button>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Grid.Row="3" Spacing="4" Padding="4" HorizontalOptions="CenterAndExpand">
+            <Button x:Name="buttonTestScan" Clicked="buttonTestScan_Clicked" Text="Test Scan"></Button>
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,142 @@
+﻿@using MauiBlazorBarcodeScanner.Services
+@using Microsoft.JSInterop
+
+@implements IAsyncDisposable
+
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@inject ICameraControlService CameraControlService
+
+<div @ref="divReader" id="reader"></div>
+
+@code {
+    private bool isInitialized = false;
+    private CameraController _cameraController = null!;
+
+    private ElementReference divReader;
+
+    private int scanDelay = 2;
+    private bool isFrontCamera = false;
+    private bool isCameraOn = false;
+    private bool isScanning = false;
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _cameraController = new CameraController(JSRuntime, CameraControlService);
+            await _cameraController.InitializeAsync("reader");
+
+            isInitialized = true;
+        }
+
+        base.OnAfterRender(firstRender);
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        var instance = (CameraControlService as CameraControlService);
+        if (instance == null)
+        {
+            throw new Exception("Do not override the DI for the ICameraControlService interface.");
+        }
+
+        instance.ScanDelayChanged += (o, e) => SetScanDelay(e);
+        instance.IsFrontCameraChanged += (o, e) => ToggleCameraFacing();
+        instance.IsCameraOnChanged += (o, e) => ToggleCameraOn();
+        instance.IsScanningChanged += (o, e) => ToggleScanning();
+        instance.DisposeRequested += (o, e) => Dispose();
+
+        instance.TestScanRequested += (o, e) => TestScan();
+    }
+
+    public async void SetScanDelay(int value)
+    {
+        if (!isInitialized)
+        {
+            return;
+        }
+
+        var result = await _cameraController.SetScanDelayAsync(value);
+        if (result)
+        {
+            scanDelay = value;
+            StateHasChanged();
+        }
+    }
+
+    public async void ToggleCameraFacing()
+    {
+        if (!isInitialized)
+        {
+            return;
+        }
+
+        var result = await _cameraController.SetFrontCameraAsync(!isFrontCamera);
+        if (result)
+        {
+            isFrontCamera = !isFrontCamera;
+            StateHasChanged();
+        }
+    }
+
+    public async void ToggleCameraOn()
+    {
+        if (!isInitialized)
+        {
+            return;
+        }
+
+        var result = await _cameraController.SetCameraOnAsync(!isCameraOn);
+        if (result)
+        {
+            isCameraOn = !isCameraOn;
+            StateHasChanged();
+        }
+    }
+
+    public async void ToggleScanning()
+    {
+        if (!isInitialized)
+        {
+            return;
+        }
+
+        var result = await _cameraController.SetScanningAsync(!isScanning);
+        if (result)
+        {
+            isScanning = !isScanning;
+            if (isScanning)
+            {
+                isCameraOn = true;
+            }
+            StateHasChanged();
+        }
+    }
+
+    private async void TestScan()
+    {
+        if (!isInitialized)
+        {
+            return;
+        }
+
+        await _cameraController.TestScanAsync();
+        /*await InvokeAsync(async () =>
+        {
+            await _cameraController.TestScanAsync();
+        });*/
+    }
+
+    public async void Dispose()
+    {
+        await _cameraController.DisposeAsync();
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        await _cameraController.DisposeAsync();
+    }
+}

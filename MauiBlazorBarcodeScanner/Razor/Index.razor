@@ -1,0 +1,19 @@
+﻿@page "/"
+
+@inject NavigationManager NavigationManager
+
+<Scanner></Scanner>
+
+@code {
+    private string? _lastError = null;
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "reloaded")]
+    public bool? HasReloaded { get; set; }
+
+    private void Reload()
+    {
+        var reloadedUri = NavigationManager.GetUriWithQueryParameter("reloaded", true);
+        NavigationManager.NavigateTo(reloadedUri, true);
+    }
+}
