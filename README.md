@@ -17,8 +17,8 @@ _Android_
 
 _iOS_
 ```xml
-	<key>NSCameraUsageDescription</key>
-	<string>The camera scanner requires this permission to open the camera and look for barcodes to scan.</string>
+<key>NSCameraUsageDescription</key>
+<string>The camera scanner requires this permission to open the camera and look for barcodes to scan.</string>
 ```
 
 ##NOTE
