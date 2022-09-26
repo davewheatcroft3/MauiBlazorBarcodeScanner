@@ -5,7 +5,7 @@ Because of current MAUI support for camera preview being limited to the pre-rele
 and scanning, this is an alternative to utlizes the power of Blazor Hybrid and our old friend JavaScript to use the platforms webview to access a camera
 preview, and a JS lib (using ZXing JS!) to scan the barcode from video frames.
 
-##Steps to add to your project
+## Steps to add to your project
 1. Call: builder.AddCameraScanner();
 
 2. Ensure you have CAMERA permission for Android (Platforms/Android/AndroidManifest.xml) or added it to your Info.plist for iOS.
@@ -21,7 +21,7 @@ _iOS_
 <string>The camera scanner requires this permission to open the camera and look for barcodes to scan.</string>
 ```
 
-##NOTE
+## NOTE
 1. If you get build errors mentioning:
 
 _obj\Debug\net6.0-android\staticwebassets_
