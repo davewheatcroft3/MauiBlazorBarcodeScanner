@@ -5,17 +5,25 @@ Because of current MAUI support for camera preview being limited to the pre-rele
 and scanning, this is an alternative to utlizes the power of Blazor Hybrid and our old friend JavaScript to use the platforms webview to access a camera
 preview, and a JS lib (using ZXing JS!) to scan the barcode from video frames.
 
-## Steps to add to your project
-1. Call: builder.AddCameraScanner();
+## Installation
+1. Install Nuget package
+```
+Install-Package DotNetMaui.HybridBarcodeScanner
+```
 
-2. Ensure you have CAMERA permission for Android (Platforms/Android/AndroidManifest.xml) or added it to your Info.plist for iOS.
+2. Add as a dependency to the MAUI app builder:
+```cs
+builder.AddMauiBlazorBarcodeScanner();
+```
 
-_Android_
+3. Ensure you have CAMERA permission for Android (Platforms/Android/AndroidManifest.xml) or added it to your Info.plist for iOS.
+
+*Android*
 ```xml
 <uses-permission android:name="android.permission.CAMERA" />
 ```
 
-_iOS_
+*iOS*
 ```xml
 <key>NSCameraUsageDescription</key>
 <string>The camera scanner requires this permission to open the camera and look for barcodes to scan.</string>
@@ -36,3 +44,27 @@ https://github.com/dotnet/maui/issues/9882
 
 If you go to Google Play and uninstall the Android web view control, it will work. It appears to be an issue with the latest webview, 
 and was literally resolved yesterday at the time of writing, so im hoping it will be fine by the time you read this!
+
+The permissions part of this project was copied from:
+https://github.com/MackinnonBuck/MauiBlazorPermissionsExample
+I logged on a issue on there regarding an issue specifically with AppShell where something the app shell does mean the blazor web view on 
+initalized method is too late to register with the Android activitie's result handler meaning it throws an error. I modifed this to work by
+hooking into the android page lifecycle and altering the permission manager to be a singleton that gets set by both the activity and the web view.
+Not necessarily the nicest solution, but any better ideas welcome!
+
+## Camera View
+### Propertes
+
+*IsFrontCamera* - whether or not to use the front camera (defaults to false)
+
+*IsCameraOn* - how you turn the camera on (true) or off (false) (defaults to false)
+
+*IsScanning* - whether the barcode scanner will report barcodes found in camera frames (defaults to false)
+
+*ScanDelay* - after a successful scan, will not allow more scans for the next x seconds (defaults to 2)
+
+*BarcodeDetectedCommand* - when a barcode is found in a camera frame, reports back the barcode as its paramter (string)
+
+### Events
+
+*BarcodeDetected* - when a barcode is found in a camera frame, reports back the barcode as its event argument
