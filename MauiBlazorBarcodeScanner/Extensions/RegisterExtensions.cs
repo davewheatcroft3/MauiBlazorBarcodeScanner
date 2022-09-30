@@ -21,11 +21,10 @@ namespace MauiBlazorBarcodeScanner.Extensions
                         // Called once per page it seems...
                         var permissionManager = ServiceProvider.Current.GetRequiredService<IBlazorWebViewPermissionsManager>();
 
-                        if (activity is not ComponentActivity componentActivity)
+                        if (activity is ComponentActivity componentActivity)
                         {
-                            throw new InvalidOperationException($"The permission-managing WebChromeClient requires that the current activity be a '{nameof(ComponentActivity)}'.");
+                            permissionManager.SetActivity(componentActivity);
                         }
-                        permissionManager.SetActivity(componentActivity);
                     });
                 });
 #endif
