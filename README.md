@@ -11,12 +11,20 @@ preview, and a JS lib (using ZXing JS!) to scan the barcode from video frames.
 Install-Package DotNetMaui.HybridBarcodeScanner
 ```
 
-2. Add as a dependency to the MAUI app builder:
+2. Edit your csproj's project tag to be:
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+```
+
+(if you are already using Blazor Hybrid this will already be the case)
+
+3. Add as a dependency to the MAUI app builder:
 ```cs
 builder.AddMauiBlazorBarcodeScanner();
 ```
 
-3. Ensure you have CAMERA permission for Android (Platforms/Android/AndroidManifest.xml) or added it to your Info.plist for iOS.
+4. Ensure you have CAMERA permission for Android (Platforms/Android/AndroidManifest.xml) or added it to your Info.plist for iOS.
 
 *Android*
 ```xml
@@ -29,7 +37,7 @@ builder.AddMauiBlazorBarcodeScanner();
 <string>The camera scanner requires this permission to open the camera and look for barcodes to scan.</string>
 ```
 
-## NOTE
+## Troubleshooting
 1. If you get build errors mentioning:
 
 _obj\Debug\net6.0-android\staticwebassets_
